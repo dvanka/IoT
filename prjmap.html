@@ -1,0 +1,33 @@
+<html>
+  <head>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script>
+    google.load('visualization', '1', { 'packages': ['map'] });
+    google.setOnLoadCallback(drawMap);
+
+    function drawMap() {
+      var inf = google.visualization.arrayToDataTable([
+        ['Zip', 'Temperature'],
+        ['44240', ' Temp-23.37'],
+        ['44236', ' Temp-28.687'],
+        ['44224', ' Temp-26.625'],
+        ['44114', ' Temp-26.5'],
+        ['44139', ' Temp-21.8'],
+        ['44424', ' Temp-18.0'],
+        ['44721', ' Temp-27.437.0']
+      ]);
+
+    var cond = { showTip: true };
+
+    var map = new google.visualization.Map(document.getElementById('chart'));
+
+    map.draw(inf, cond);
+  };
+  </script>
+  </head>
+  <h> Locations of users </h>
+  <body>
+    <div id="chart"></div>
+      This map helps in showing the locations of different users including the temperature of that specific user in that area.
+  </body>
+</html>
