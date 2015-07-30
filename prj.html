@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- EXTERNAL LIBS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
+
+    <!-- EXAMPLE SCRIPT -->
+    <script>
+
+      // onload callback
+      function drawChart() {
+
+        var public_key = 'dZ4EVmE8yGCRGx5XRX1W';
+
+        // JSONP request
+        var jsonData = $.ajax({
+          url: 'https://data.sparkfun.com/output/aGOE6rY5mxcxX1GNnOKq.json?gt[timestamp]=2015-07-29&timezone=America/New_York',
+          data: {page: 1},
+          dataType: 'jsonp',
+        }).done(function (results) {
+
+          var data1 = new google.visualization.DataTable();
+          var data2 = new google.visualization.DataTable();
+
+          data1.addColumn('datetime', 'Time');
+          data2.addColumn('datetime', 'Time');
+          data1.addColumn('number', 'light');
+          data2.addColumn('number', 'temperature');
+
+          $.each(results, function (i, row) {
+            data1.addRow([
+              (new Date(row.timestamp)),
+              parseFloat(row.light)
+            ]);
+          });
+
+
+          $.each(results, function (i, row) {
+            data2.addRow([
+              (new Date(row.timestamp)),
+              parseFloat(row.temperature)
+            ]);
+          });
+
+
+          var chart1 = new google.visualization.BarChart($('#chart1').get(0));
+          var chart2 = new google.visualization.LineChart($('#chart2').get(0));
+
+          chart1.draw(data1, {
+            title: 'Changes in Light'
+          });
+
+
+          chart2.draw(data2, {
+            title: 'Changes in Temperature'
+          });
+        });
+
+      }
+
+      // load chart lib
+      google.load('visualization', '1', {
+        packages: ['corechart']
+      });
+
+      // call drawChart once google charts is loaded
+      google.setOnLoadCallback(drawChart);
+
+    </script>
+
+  </head>
+  <body>
+    <div id="chart1" style="width: 100%;"></div>
+       This graph shows the changes in light within the last 4 hours with an intervals of half an hour for all the users.
+        <div id="chart2" style="width: 100%;"></div>
+           This graph shows the changes in temperature within the last 2 hours with a regular interval of fifteen minutes for evry user.
+  </body>
+</html>
